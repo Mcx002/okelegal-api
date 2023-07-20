@@ -4,6 +4,7 @@ import DbAdapter from '../adapters/db.adapter'
 import { ClientAuth } from './client-auth.model'
 import { AuthSession } from './auth-session.model'
 import { Submission } from './submission.model'
+import { Invoice } from './invoice.model'
 
 export default class ModelProvider {
     public dbContext: DbAdapter
@@ -16,5 +17,6 @@ export default class ModelProvider {
         User.initModel(sequelize)
         ClientAuth.initModel(sequelize)
         Submission.initModel(sequelize)
+        Invoice.initModel(sequelize)
     }
 }
