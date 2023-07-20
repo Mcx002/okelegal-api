@@ -1,0 +1,15 @@
+import BaseRepository from '../base/base-repository'
+import Provider from '../../provider'
+import { Logger } from 'winston'
+
+export class {{pascalCase name}}Repository extends BaseRepository {
+    log!: Logger
+
+    init(provider: Provider) {
+        const { logger } = provider
+
+        this.log = logger
+    }
+
+    // -- Repository Function Port -- //
+}

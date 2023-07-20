@@ -1,0 +1,19 @@
+import BaseController from '../base/base-controller'
+import { Module } from '../../decorators/controller.decorator'
+import Provider from '../../provider'
+import { Logger } from 'winston'
+
+@Module('/')
+export class {{pascalCase name}}Controller extends BaseController {
+    log!: Logger
+
+    // services
+
+    init(provider: Provider) {
+        const { logger } = provider
+
+        this.log = logger
+    }
+
+    // -- Controller Function Port -- //
+}

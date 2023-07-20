@@ -1,0 +1,9 @@
+node_modules
+.idea
+.scannerwork
+coverage
+
+.env
+.env.test
+
+base-rest-api.iml

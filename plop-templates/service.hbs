@@ -1,0 +1,17 @@
+import BaseService from '../base/base-service'
+import Provider from '../../provider'
+import { Logger } from 'winston'
+
+export class {{pascalCase name}}Service extends BaseService {
+    log!: Logger
+
+    // repositories
+
+    init(provider: Provider) {
+        const { logger } = provider
+
+        this.log = logger
+    }
+
+    // -- Service Function Port -- //
+}
