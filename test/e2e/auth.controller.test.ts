@@ -103,13 +103,11 @@ describe('Auth Controller E2E Test', () => {
         expect(res.body.data.session).toBeDefined()
         expect(res.body.data.scopes.length).toBe(2)
 
-        const res2 = await request(server)
+        await request(server)
             .post('/auth/google')
             .set({
                 Authorization: `Bearer ${res.body.data.session.token}`,
             })
-
-        console.log(res2)
 
         await deleteClientAuthSeed()
     })

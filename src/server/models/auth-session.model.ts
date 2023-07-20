@@ -35,8 +35,8 @@ export class AuthSession
     subjectId!: string
     subjectTypeId!: SubjectType
     content!: AuthSessionContent
-    notificationChannelId!: NotificationChannel
-    notificationToken!: string
+    notificationChannelId?: NotificationChannel
+    notificationToken?: string
     expiredAt!: Date
 
     static initModel(sequelize: Sequelize) {
@@ -82,11 +82,11 @@ export class AuthSession
                 },
                 notificationChannelId: {
                     type: DataTypes.SMALLINT,
-                    allowNull: false,
+                    allowNull: true,
                 },
                 notificationToken: {
                     type: DataTypes.STRING(255),
-                    allowNull: false,
+                    allowNull: true,
                 },
                 expiredAt: {
                     type: DataTypes.DATE,
