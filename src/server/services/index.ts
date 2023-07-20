@@ -5,6 +5,7 @@ import BaseService from '../base/base-service'
 import { HealthService } from './health.service'
 import { UserService } from './user.service'
 import { AuthService } from './auth.service'
+import { SubmissionService } from './submission.service'
 // -- Service Import Port -- //
 
 export default class ServiceProvider {
@@ -14,6 +15,7 @@ export default class ServiceProvider {
     healthService: HealthService = new HealthService()
     userService: UserService = new UserService()
     authService = new AuthService()
+    submissionService = new SubmissionService()
     // -- Service Initiation Port -- //
 
     init(provider: Provider): void {
