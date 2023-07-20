@@ -8,6 +8,7 @@ import RepositoryProvider from './server/repositories'
 import ServiceProvider from './server/services'
 import ControllerProvider from './server/controllers'
 import MiddlewareProvider from './server/middlewares'
+import { Sequelize } from 'sequelize'
 
 export type BootResult = {
     app: Express
@@ -15,7 +16,7 @@ export type BootResult = {
     logger: Logger
 }
 
-export const initProvider = (provider: Provider) => {
+export const initProvider = (provider: Provider, conn: Sequelize) => {
     // Init Provider
     provider.repository = new RepositoryProvider()
     provider.service = new ServiceProvider()
@@ -23,7 +24,7 @@ export const initProvider = (provider: Provider) => {
     provider.middleware = new MiddlewareProvider()
 
     // Initiate providers
-    provider.repository.init(provider)
+    provider.repository.init(provider, conn)
     provider.service.init(provider)
     provider.controller.init(provider)
     provider.middleware.init(provider)
@@ -65,7 +66,7 @@ export async function boot(): Promise<BootResult> {
     await model.dbContext.checkConnection()
 
     // Setting Up providers
-    initProvider(provider)
+    initProvider(provider, model.dbContext.sequelize)
 
     // Setting Up Cors Option
     const costOptions: CorsOptions = {

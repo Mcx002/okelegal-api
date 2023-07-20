@@ -26,6 +26,7 @@ import { jwtAdapter } from '../adapters/jwt.adapter'
 import { myConfig } from '../../config'
 import { AuthRepository } from '../repositories/auth.repository'
 import { AuthSessionCreationAttributes } from '../models/auth-session.model'
+import { dateToUnix } from '../../utils/date-formatter'
 
 export class UserService extends BaseService {
     log!: Logger
@@ -55,8 +56,8 @@ export class UserService extends BaseService {
             xid: row.xid,
             name: row.name,
             email: row.email,
-            createdAt: DateTime.fromJSDate(row.createdAt).toSeconds(),
-            updatedAt: DateTime.fromJSDate(row.createdAt).toSeconds(),
+            createdAt: dateToUnix(row.createdAt),
+            updatedAt: dateToUnix(row.updatedAt),
             version: row.version,
         }
     }

@@ -32,7 +32,7 @@ export class SubmissionService extends BaseService {
         }
     }
 
-    createSubmission = async (payload: SubmissionDto): Promise<SubmissionDto> => {
+    createSubmission = async (payload: Pick<SubmissionDto, 'address' | 'companyName'>): Promise<SubmissionDto> => {
         const { address, companyName } = payload
         const creationRow: SubmissionCreationAttributes = {
             address,
@@ -46,8 +46,8 @@ export class SubmissionService extends BaseService {
         const snapshot = this.composeSubmissionDto({ ...creationRow, id: 0 })
 
         creationRow.history.push({
-            timestamp: DateTime.now().toSeconds(),
-            statusId: SubmissionStatus.Submitted,
+            timestamp: DateTime.now().toUnixInteger(),
+            statusId: snapshot.status.id,
             submissionSnapshot: {
                 xid: snapshot.xid,
                 status: snapshot.status,

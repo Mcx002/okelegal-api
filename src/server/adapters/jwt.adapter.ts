@@ -43,7 +43,7 @@ export class JwtAdapter {
         }
 
         // Calculate expiry
-        const exp = DateTime.fromJSDate(createdAt).plus({ second: lifetime }).toSeconds()
+        const exp = DateTime.fromJSDate(createdAt).plus({ second: lifetime }).toUnixInteger()
 
         // Generate token
         const token = jwt.sign(payload, this.secret, jwtOptions)

@@ -34,5 +34,5 @@ export const convertSecondsToUptime = (seconds: number): Uptime => {
 }
 
 export const dateToUnix = (date: Date): number => {
-    return DateTime.fromJSDate(date).toSeconds()
+    return DateTime.fromJSDate(date).toUnixInteger()
 }
