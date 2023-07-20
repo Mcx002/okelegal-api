@@ -4,6 +4,7 @@ import BaseRepository from '../base/base-repository'
 // Repository Imports
 import { UserRepository } from './user.repository'
 import { AuthRepository } from './auth.repository'
+import { SubmissionRepository } from './submission.repository'
 // -- Repository Import Port -- //
 
 export default class RepositoryProvider {
@@ -12,6 +13,7 @@ export default class RepositoryProvider {
     // Repository Store
     userRepository = new UserRepository()
     authRepository = new AuthRepository()
+    submissionRepository = new SubmissionRepository()
     // -- Repository Initiation Port -- //
 
     init(provider: Provider): void {
