@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest --runInBand --detectOpenHandles",
     "test:unit": "jest --runInBand --detectOpenHandles --testPathPattern=test/unit",
-    "test:e2e": "jest --runInBand --detectOpenHandles --testPathPattern=test/e2e --verbose",
+    "test:e2e": "jest --runInBand --detectOpenHandles --testPathPattern=test/e2e",
+    "test:e2e:verbose": "jest --runInBand --detectOpenHandles --testPathPattern=test/e2e --verbose",
     "test:verbose": "jest --runInBand --detectOpenHandles --verbose",
     "test:coverage": "jest --runInBand --detectOpenHandles --coverage",
     "format:fix": "eslint --ext .ts --fix src --fix test",

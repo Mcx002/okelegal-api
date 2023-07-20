@@ -10,6 +10,7 @@ import { UserController } from './user.controller'
 import { ClientError, MError } from '../../utils/errors'
 import { ApiResponse, ErrorResponse, RedirectResponse } from '../../dto/common.dto'
 import { AuthController } from './auth.controller'
+import { SubmissionController } from './submission.controller'
 // -- Controller Import Port -- //
 
 export default class ControllerProvider {
@@ -19,6 +20,7 @@ export default class ControllerProvider {
     healthController = new HealthController()
     userController = new UserController()
     authController = new AuthController()
+    submissionController = new SubmissionController()
     // -- Controller Initiation Port -- //
 
     init(provider: Provider): void {
