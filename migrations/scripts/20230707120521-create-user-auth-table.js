@@ -191,7 +191,7 @@ module.exports = {
             },
             notificationChannelId: {
                 type: Sequelize.SMALLINT,
-                allowNull: false,
+                allowNull: true,
                 references: {
                     model: 'NotificationChannel',
                     key: 'id',
@@ -199,7 +199,7 @@ module.exports = {
             },
             notificationToken: {
                 type: Sequelize.STRING(255),
-                allowNull: false,
+                allowNull: true,
             },
             expiredAt: {
                 type: Sequelize.DATE,
