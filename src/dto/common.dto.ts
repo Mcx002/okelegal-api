@@ -1,3 +1,5 @@
+import { Subject } from './auth.dto'
+
 export interface GetDetailPayload {
     xid: string
 }
@@ -43,4 +45,13 @@ export interface BaseResult {
 
 export interface KeyValueMetadata {
     [k: string]: string | number | boolean
+}
+
+export interface ImageResult {
+    fileName: string
+    url?: string
+}
+
+export interface SubjectExtent {
+    subject: Subject
 }
