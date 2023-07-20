@@ -11,6 +11,7 @@ import { ClientError, MError } from '../../utils/errors'
 import { ApiResponse, ErrorResponse, RedirectResponse } from '../../dto/common.dto'
 import { AuthController } from './auth.controller'
 import { SubmissionController } from './submission.controller'
+import { InvoiceController } from './invoice.controller'
 // -- Controller Import Port -- //
 
 export default class ControllerProvider {
@@ -21,6 +22,7 @@ export default class ControllerProvider {
     userController = new UserController()
     authController = new AuthController()
     submissionController = new SubmissionController()
+    invoiceController = new InvoiceController()
     // -- Controller Initiation Port -- //
 
     init(provider: Provider): void {

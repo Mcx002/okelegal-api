@@ -7,7 +7,7 @@ import { ValidateSession } from '../../decorators/auth.decorator'
 import { Privilege } from '../constants/auth.constant'
 import { SubmissionDto } from '../../dto/submission.dto'
 import { MValidator } from '../../utils/validator'
-import { postCreateSubmission } from '../validators/submission.validator'
+import { postCreateSubmissionValidator } from '../validators/submission.validator'
 
 @Module('/submissions')
 export class SubmissionController extends BaseController {
@@ -25,7 +25,7 @@ export class SubmissionController extends BaseController {
     async postCreateSubmission(req: RequestWithSubject) {
         const payload = req.body as SubmissionDto
 
-        MValidator.validate(postCreateSubmission, payload)
+        MValidator.validate(postCreateSubmissionValidator, payload)
 
         const data = await this.submissionService.createSubmission(payload)
 
