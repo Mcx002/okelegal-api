@@ -5,6 +5,8 @@ import { ClientAuth } from './client-auth.model'
 import { AuthSession } from './auth-session.model'
 import { Submission } from './submission.model'
 import { Invoice } from './invoice.model'
+import { Admin } from './admin.model'
+import { AdminAuth } from './admin-auth.model'
 
 export default class ModelProvider {
     public dbContext: DbAdapter
@@ -18,5 +20,9 @@ export default class ModelProvider {
         ClientAuth.initModel(sequelize)
         Submission.initModel(sequelize)
         Invoice.initModel(sequelize)
+        Admin.initModel(sequelize)
+        AdminAuth.initModel(sequelize)
+
+        Admin.hasOne(AdminAuth, { foreignKey: 'adminId', as: 'adminAuth' })
     }
 }
