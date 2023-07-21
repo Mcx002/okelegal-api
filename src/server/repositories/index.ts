@@ -7,6 +7,7 @@ import { AuthRepository } from './auth.repository'
 import { SubmissionRepository } from './submission.repository'
 import { InvoiceRepository } from './invoice.repository'
 import { Sequelize } from 'sequelize'
+import { AdminRepository } from './admin.repository'
 // -- Repository Import Port -- //
 
 export default class RepositoryProvider {
@@ -18,6 +19,7 @@ export default class RepositoryProvider {
     authRepository = new AuthRepository()
     submissionRepository = new SubmissionRepository()
     invoiceRepository = new InvoiceRepository()
+    adminRepository = new AdminRepository()
     // -- Repository Initiation Port -- //
 
     init(provider: Provider, conn: Sequelize): void {
