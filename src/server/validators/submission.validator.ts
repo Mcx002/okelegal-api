@@ -1,6 +1,6 @@
 import { MValidator } from '../../utils/validator'
 
 export const postCreateSubmissionValidator = MValidator.buildSchema({
-    companyName: 'string|required',
-    address: 'string|required',
+    companyName: 'string|empty:false|required',
+    address: 'string|empty:false|required',
 })

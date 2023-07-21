@@ -8,10 +8,11 @@ import { PathMetadata } from '../../decorators/controller.decorator'
 import { HealthController } from './health.controller'
 import { UserController } from './user.controller'
 import { ClientError, MError } from '../../utils/errors'
-import { ApiResponse, ErrorResponse, RedirectResponse } from '../../dto/common.dto'
+import { ResponseData, ErrorResponse, ResponseRedirect } from '../../dto/common.dto'
 import { AuthController } from './auth.controller'
 import { SubmissionController } from './submission.controller'
 import { InvoiceController } from './invoice.controller'
+import { AdminAuthController } from './admin-auth.controller'
 // -- Controller Import Port -- //
 
 export default class ControllerProvider {
@@ -23,6 +24,7 @@ export default class ControllerProvider {
     authController = new AuthController()
     submissionController = new SubmissionController()
     invoiceController = new InvoiceController()
+    adminAuthController = new AdminAuthController()
     // -- Controller Initiation Port -- //
 
     init(provider: Provider): void {
@@ -70,7 +72,7 @@ export default class ControllerProvider {
                     try {
                         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                         // @ts-ignore
-                        const result: Optinal<ApiResponse | RedirectResponse> = await this[item][path.propertyKey](
+                        const result: Optinal<ResponseData | ResponseRedirect> = await this[item][path.propertyKey](
                             req,
                             res,
                             next

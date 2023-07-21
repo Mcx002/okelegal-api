@@ -5,6 +5,7 @@ import { NotificationChannel } from '../server/constants/notification.constant'
 import { UserDto } from './user.dto'
 import { AuthSessionContent } from '../server/models/auth-session.model'
 import { UserAttributes } from '../server/models/user.model'
+import { AdminJoinAttributes } from '../server/models/admin.model'
 
 export enum AuthProviderEnum {
     EMAIL = 'Email',
@@ -170,11 +171,27 @@ export interface CreateAuthSessionPayload {
     authSessionContent: AuthSessionContent
 }
 
-export interface PrepareDataSessionResult {
+export interface PrepareUserDataSessionResult {
     sessionXid: string
     timestamp: Date
     subjectType: SubjectType
     privileges: Privilege[]
     subjectId: string
     user: UserAttributes
+}
+
+export interface PrepareAdminDataSessionResult {
+    sessionXid: string
+    timestamp: Date
+    subjectType: SubjectType
+    privileges: Privilege[]
+    subjectId: string
+    admin: Required<AdminJoinAttributes>
+}
+
+export interface AdminLoginPayload {
+    email: string
+    password: string
+    device: AuthSessionDevice
+    authProvider: AuthProviderEnum
 }
