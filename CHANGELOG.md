@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.4.0
+- feat(admin): Add login API
+
 ## v0.3.0
 - feat(invoice): Add create invoice API
 
