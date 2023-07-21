@@ -16,6 +16,7 @@
     "db:down": "npx sequelize-cli db:migrate:undo",
     "db:reset": "npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate",
     "db:seed:clientAuth": "npx sequelize-cli db:seed --seed 20230709110329-create-client-auth.js",
+    "db:seed:admin": "npx sequelize-cli db:seed --seed  20230720132211-create-superadmin.js",
     "db:setup:test": "NODE_ENV=test npx sequelize-cli db:create && NODE_ENV=test npx sequelize-cli db:migrate",
     "db:reset:test": "NODE_ENV=test npx sequelize-cli db:drop && NODE_ENV=test npx sequelize-cli db:create && NODE_ENV=test npx sequelize-cli db:migrate"
   },
