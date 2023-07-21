@@ -5,10 +5,10 @@ import Express from 'express'
 import { errors } from '../constants/error.constant'
 import { AuthService } from '../services/auth.service'
 import { myConfig } from '../../config'
-import { ApiResponse, RedirectResponse } from '../../dto/common.dto'
+import { ResponsePromise, ResponseRedirect } from '../../dto/common.dto'
 import { ValidateSession } from '../../decorators/auth.decorator'
 import { Privilege } from '../constants/auth.constant'
-import { AuthSessionDevice } from '../../dto/auth.dto'
+import { AuthSessionDevice, SessionResult, UserSessionResult } from '../../dto/auth.dto'
 import { MValidator } from '../../utils/validator'
 import { getGoogleAuthorizedValidator } from '../validators/auth.validator'
 import { captureClientIP } from '../../utils/express-utils'
@@ -25,7 +25,7 @@ export class AuthController extends BaseController {
     }
 
     @Post('/anonymous')
-    async postCreateAnonymousSession(req: Express.Request): Promise<ApiResponse> {
+    async postCreateAnonymousSession(req: Express.Request): ResponsePromise<SessionResult> {
         // retrieve token
         const token = req.headers.authorization
         if (!token) {
@@ -44,7 +44,7 @@ export class AuthController extends BaseController {
     }
 
     @Get('/google')
-    getGoogleLogin(_: Express.Request): RedirectResponse {
+    getGoogleLogin(_: Express.Request): ResponseRedirect {
         const scopes = ['openid', 'email', 'profile']
         const responseType = 'code'
         const accessType = 'offline'
@@ -67,7 +67,7 @@ export class AuthController extends BaseController {
 
     @Get('/google/authorized')
     @ValidateSession([Privilege.AnonymousUser])
-    async getGoogleAuthorized(req: Express.Request): Promise<ApiResponse> {
+    async getGoogleAuthorized(req: Express.Request): ResponsePromise<UserSessionResult> {
         const code = (req.query.code ?? '').toString()
         const payload = req.body as AuthSessionDevice
         payload.clientIP = captureClientIP(req)

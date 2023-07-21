@@ -10,12 +10,12 @@ export interface ErrorResponse {
     data: unknown
 }
 
-export interface ApiResponse {
-    data: unknown
+export interface ResponseData<T> {
+    data: T
     message?: string
 }
 
-export interface RedirectResponse {
+export interface ResponseRedirect {
     redirect: string
 }
 
@@ -55,3 +55,5 @@ export interface ImageResult {
 export interface SubjectExtent {
     subject: Subject
 }
+
+export type ResponsePromise<T> = Promise<ResponseData<T>>

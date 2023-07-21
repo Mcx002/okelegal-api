@@ -2,7 +2,8 @@ import BaseController from '../base/base-controller'
 import { Get, Module } from '../../decorators/controller.decorator'
 import Provider from '../../provider'
 import { HealthService } from '../services/health.service'
-import { ApiResponse } from '../../dto/common.dto'
+import { ResponseData } from '../../dto/common.dto'
+import { HealthDto } from '../../dto/health.dto'
 
 @Module('/')
 export class HealthController extends BaseController {
@@ -14,7 +15,7 @@ export class HealthController extends BaseController {
     }
 
     @Get()
-    getHealth(): ApiResponse {
+    getHealth(): ResponseData<HealthDto> {
         const data = this.healthService.getHealth()
 
         return { data }
