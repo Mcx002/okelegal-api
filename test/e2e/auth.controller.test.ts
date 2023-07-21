@@ -9,7 +9,7 @@ import { ClientAuth } from '../../src/server/models/client-auth.model'
 import * as randomstring from 'randomstring'
 import bcrypt from 'bcrypt'
 
-const insertClientAuthSeed = async (): Promise<{ clientId: string; clientSecret: string }> => {
+export const insertClientAuthSeed = async (): Promise<{ clientId: string; clientSecret: string }> => {
     const logger = createLoggerTest()
 
     // Prepare Dependencies Injection

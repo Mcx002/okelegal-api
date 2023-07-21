@@ -27,7 +27,7 @@ describe('Submission Controller E2E Test', () => {
         server.close()
     })
 
-    test('[POST /] Should Create Submission', async () => {
+    test('[POST /submissions] Should Create Submission', async () => {
         const { service } = createProviderTest(db.dbContext.sequelize)
         const { accessSession } = await generateToken(service.userService)
 

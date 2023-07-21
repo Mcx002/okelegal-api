@@ -29,7 +29,7 @@ describe('Invoice Controller E2E Test', () => {
         server.close()
     })
 
-    test('[POST /] Should Create Invoice', async () => {
+    test('[POST /invoices] Should Create Invoice', async () => {
         const { service } = createProviderTest(db.dbContext.sequelize)
         const { accessSession } = await generateToken(service.userService)
 
