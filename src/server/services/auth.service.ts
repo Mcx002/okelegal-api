@@ -3,8 +3,10 @@ import Provider from '../../provider'
 import {
     AuthorizeGoogleAuthCodePayload,
     AuthProviderEnum,
+    CreateAccessSessionPayload,
     GoogleJsonWebKeyData,
     JWTPayload,
+    Session,
     SessionResult,
     Subject,
     UserSessionResult,
@@ -264,6 +266,43 @@ export class AuthService extends BaseService {
         }
 
         return this.userService.createSession(email, AuthProviderEnum.GOOGLE, device, verifiedJwtPayload['name'])
+    }
+
+    createAccessSession = (
+        payload: CreateAccessSessionPayload
+    ): { accessSession: Session; refreshSession: Session } => {
+        const {
+            sessionXid,
+            subject,
+            subjectType,
+            timestamp,
+            lifetime,
+            refreshLifetime,
+            accessTokenAudience,
+            refreshTokenAudience,
+        } = payload
+
+        // Create access session
+        const accessSession = jwtAdapter.issue({
+            sessionXid,
+            subject,
+            subjectType,
+            createdAt: timestamp,
+            lifetime: lifetime,
+            audience: accessTokenAudience,
+        })
+
+        // Create refresh session
+        const refreshSession = jwtAdapter.issue({
+            sessionXid,
+            subject,
+            subjectType,
+            createdAt: timestamp,
+            lifetime: refreshLifetime,
+            audience: refreshTokenAudience,
+        })
+
+        return { accessSession, refreshSession }
     }
 
     // -- Service Function Port -- //

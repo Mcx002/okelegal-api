@@ -2,7 +2,6 @@ import BaseService from '../base/base-service'
 import { GetDetailPayload } from '../../dto/common.dto'
 import { UserDto } from '../../dto/user.dto'
 import { toUserModifier, UserAttributes, UserCreationAttributes } from '../models/user.model'
-import { Logger } from 'winston'
 import Provider from '../../provider'
 import { UserRepository } from '../repositories/user.repository'
 import { errors, handleError } from '../constants/error.constant'
@@ -13,32 +12,33 @@ import { DateTime } from 'luxon'
 import {
     AuthProviderEnum,
     AuthSessionDevice,
-    CreateAccessSessionPayload,
     GetAuthSubjectPayload,
-    PrepareDataSessionResult,
+    PrepareUserDataSessionResult,
     Session,
     Subject,
     UserSessionResult,
 } from '../../dto/auth.dto'
 import { baseAttributesValue } from '../constants/common.constant'
 import { Privilege, SubjectPrivileges, SubjectType } from '../constants/auth.constant'
-import { jwtAdapter } from '../adapters/jwt.adapter'
 import { myConfig } from '../../config'
 import { AuthRepository } from '../repositories/auth.repository'
 import { AuthSessionCreationAttributes } from '../models/auth-session.model'
 import { dateToUnix } from '../../utils/date-formatter'
+import { AuthService } from './auth.service'
 
 export class UserService extends BaseService {
-    log!: Logger
     userRepository!: UserRepository
     authRepository!: AuthRepository
 
-    init(provider: Provider) {
-        const { logger, repository } = provider
+    authService!: AuthService
 
-        this.log = logger
+    init(provider: Provider) {
+        const { repository, service } = provider
+
         this.userRepository = repository.userRepository
         this.authRepository = repository.authRepository
+
+        this.authService = service.authService
     }
 
     getDetailUser = async (payload: GetDetailPayload): Promise<UserDto> => {
@@ -96,43 +96,6 @@ export class UserService extends BaseService {
         return this.composeUser(row)
     }
 
-    createAccessSession = (
-        payload: CreateAccessSessionPayload
-    ): { accessSession: Session; refreshSession: Session } => {
-        const {
-            sessionXid,
-            subject,
-            subjectType,
-            timestamp,
-            lifetime,
-            refreshLifetime,
-            accessTokenAudience,
-            refreshTokenAudience,
-        } = payload
-
-        // Create access session
-        const accessSession = jwtAdapter.issue({
-            sessionXid,
-            subject,
-            subjectType,
-            createdAt: timestamp,
-            lifetime: lifetime,
-            audience: accessTokenAudience,
-        })
-
-        // Create refresh session
-        const refreshSession = jwtAdapter.issue({
-            sessionXid,
-            subject,
-            subjectType,
-            createdAt: timestamp,
-            lifetime: refreshLifetime,
-            audience: refreshTokenAudience,
-        })
-
-        return { accessSession, refreshSession }
-    }
-
     composeUserSession = (
         userDto: UserDto,
         accessSession: Session,
@@ -152,7 +115,7 @@ export class UserService extends BaseService {
         }
     }
 
-    prepareDataSession = async (email: string, name?: string): Promise<PrepareDataSessionResult> => {
+    prepareDataSession = async (email: string, name?: string): Promise<PrepareUserDataSessionResult> => {
         const payload: UserCreationAttributes = {
             ...baseAttributesValue,
             statusId: ControlStatus.ACTIVE,
@@ -189,7 +152,7 @@ export class UserService extends BaseService {
             name
         )
 
-        const { accessSession, refreshSession } = this.createAccessSession({
+        const { accessSession, refreshSession } = this.authService.createAccessSession({
             sessionXid,
             subject: subjectId,
             subjectType: subjectType,

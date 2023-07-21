@@ -7,6 +7,7 @@ import { UserService } from './user.service'
 import { AuthService } from './auth.service'
 import { SubmissionService } from './submission.service'
 import { InvoiceService } from './invoice.service'
+import { AdminService } from './admin.service'
 // -- Service Import Port -- //
 
 export default class ServiceProvider {
@@ -18,6 +19,7 @@ export default class ServiceProvider {
     authService = new AuthService()
     submissionService = new SubmissionService()
     invoiceService = new InvoiceService()
+    adminService = new AdminService()
     // -- Service Initiation Port -- //
 
     init(provider: Provider): void {
