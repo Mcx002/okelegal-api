@@ -3,8 +3,9 @@ import { ClientError, ServerError } from '../../utils/errors'
 export const errors = {
     // Common
     resourceNotFound: new ClientError('Resource Not Found').setCode('E_COMM_1'),
+    invalidStatus: new ClientError('Invalid Status').setCode('E_COMM_2'),
 
-    // AUth
+    // Auth
     unauthorized: new ClientError('Unauthorized').setStatus(401).setCode('E_AUTH_1'),
     sessionExpired: new ClientError('Session is expired').setStatus(401).setCode('E_AUTH_2'),
 
