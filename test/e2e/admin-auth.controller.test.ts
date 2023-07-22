@@ -12,7 +12,7 @@ import { AdminAuth } from '../../src/server/models/admin-auth.model'
 import randomstring from 'randomstring'
 import bcrypt from 'bcrypt'
 
-const createAdminCredentials = async (): Promise<{ email: string; password: string }> => {
+export const createAdminCredentials = async (): Promise<{ email: string; password: string }> => {
     const email = 'adm@gmail.com'
     const password = 'hoaxmen'
     const adminXid = 'admXid'
