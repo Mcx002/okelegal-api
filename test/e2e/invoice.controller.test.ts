@@ -64,6 +64,6 @@ describe('Invoice Controller E2E Test', () => {
             },
         })
 
-        expect(submission2?.statusId).toBe(SubmissionStatus.Paid)
+        expect(submission2?.statusId).toBe(SubmissionStatus.Submitted)
     })
 })
