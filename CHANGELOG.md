@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.6.0
+- feat(submission): Add patch payment paid API
+
 ## v0.5.0
 - feat(submission): Add patch submission payment invalid API
 
