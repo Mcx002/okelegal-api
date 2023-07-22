@@ -10,7 +10,8 @@ import { DateTime } from 'luxon'
 import * as randomstring from 'randomstring'
 import { errors } from '../constants/error.constant'
 import { updateData } from '../../utils/data'
-import { SubjectExtent } from '../../dto/common.dto'
+import { ModifiedBy, SubjectExtent } from '../../dto/common.dto'
+import { isInArray } from '../../utils/array'
 
 export class SubmissionService extends BaseService {
     // repositories
@@ -68,15 +69,20 @@ export class SubmissionService extends BaseService {
         return this.composeSubmissionDto(row)
     }
 
-    patchPaymentInvalid = async (payload: SubmissionDto & SubjectExtent) => {
-        const { xid, subject, notes, version } = payload
-
+    updateSubmissionStatus = async (
+        xid: string,
+        version: number,
+        modifier: ModifiedBy,
+        targetStatus: SubmissionStatus,
+        previousStatus: SubmissionStatus[],
+        notes?: string
+    ): Promise<SubmissionAttributes> => {
         const row = await this.submissionRepo.findByXid(xid)
         if (!row) {
             throw errors.resourceNotFound
         }
 
-        if (row.statusId !== SubmissionStatus.Submitted) {
+        if (!isInArray(row.statusId, previousStatus)) {
             throw errors.invalidStatus
         }
 
@@ -87,11 +93,11 @@ export class SubmissionService extends BaseService {
             row,
             {
                 history: row.history,
-                statusId: SubmissionStatus.PaymentInvalid,
+                statusId: targetStatus,
                 notes,
             },
             {
-                modifiedBy: subject.modifier,
+                modifiedBy: modifier,
             }
         )
         const updatedSubmissionSnapshot = this.composeSubmissionDto(Object.assign(row, updateSubmissionValue))
@@ -113,12 +119,41 @@ export class SubmissionService extends BaseService {
 
         updateSubmissionValue.history = submissionHistory
 
-        const update = await this.submissionRepo.update(row.id, updateSubmissionValue, version ?? 0)
+        const update = await this.submissionRepo.update(row.id, updateSubmissionValue, version)
         if (update === 0) {
             this.logger.info('No row updated')
         }
 
-        return this.composeSubmissionDto(Object.assign(row, updateSubmissionValue))
+        return Object.assign(row, updateSubmissionValue)
+    }
+
+    patchPaymentInvalid = async (payload: SubmissionDto & SubjectExtent) => {
+        const { xid, subject, notes, version } = payload
+
+        const submission = await this.updateSubmissionStatus(
+            xid,
+            version ?? 0,
+            subject.modifier,
+            SubmissionStatus.PaymentInvalid,
+            [SubmissionStatus.Submitted],
+            notes
+        )
+
+        return this.composeSubmissionDto(submission)
+    }
+
+    patchPaymentPaid = async (payload: SubmissionDto & SubjectExtent) => {
+        const { xid, subject, version } = payload
+
+        const submission = await this.updateSubmissionStatus(
+            xid,
+            version ?? 0,
+            subject.modifier,
+            SubmissionStatus.Paid,
+            [SubmissionStatus.Submitted]
+        )
+
+        return this.composeSubmissionDto(submission)
     }
 
     // -- Service Function Port -- //
