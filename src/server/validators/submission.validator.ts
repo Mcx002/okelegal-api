@@ -10,3 +10,8 @@ export const patchPaymentInvalidValidator = MValidator.buildSchema({
     version: 'number|required',
     notes: 'string|empty:false|required',
 })
+
+export const patchPaymentPaidValidator = MValidator.buildSchema({
+    xid: 'string|empty:false|required',
+    version: 'number|required',
+})

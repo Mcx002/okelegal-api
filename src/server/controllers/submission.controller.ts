@@ -7,7 +7,11 @@ import { ValidateSession } from '../../decorators/auth.decorator'
 import { Privilege } from '../constants/auth.constant'
 import { SubmissionDto } from '../../dto/submission.dto'
 import { MValidator } from '../../utils/validator'
-import { postCreateSubmissionValidator, patchPaymentInvalidValidator } from '../validators/submission.validator'
+import {
+    postCreateSubmissionValidator,
+    patchPaymentInvalidValidator,
+    patchPaymentPaidValidator,
+} from '../validators/submission.validator'
 import { ResponsePromise, SubjectExtent } from '../../dto/common.dto'
 
 @Module('/submissions')
@@ -45,6 +49,22 @@ export class SubmissionController extends BaseController {
         MValidator.validate(patchPaymentInvalidValidator, payload)
 
         const data = await this.submissionService.patchPaymentInvalid(payload)
+
+        return {
+            data,
+        }
+    }
+
+    @Patch('/:xid/payment-paid')
+    @ValidateSession([Privilege.Admin])
+    async patchPaymentPaid(req: RequestWithSubject): ResponsePromise<SubmissionDto> {
+        const payload = req.body as SubmissionDto & SubjectExtent
+        payload.xid = req.params.xid
+        payload.subject = getSubject(req)
+
+        MValidator.validate(patchPaymentPaidValidator, payload)
+
+        const data = await this.submissionService.patchPaymentPaid(payload)
 
         return {
             data,
