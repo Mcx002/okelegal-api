@@ -6,6 +6,7 @@ export interface SubmissionDto extends BaseResult {
     address: string
     status: EnumResult
     history: SubmissionHistory[]
+    notes?: string
 }
 
 export interface SubmissionHistory {

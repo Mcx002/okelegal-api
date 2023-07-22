@@ -10,6 +10,7 @@ export interface SubmissionAttributes extends BaseAttributes {
     address: string
     statusId: SubmissionStatus
     history: SubmissionHistory[]
+    notes?: string
 }
 
 export type SubmissionCreationAttributes = Optional<SubmissionAttributes, 'id'>
@@ -28,6 +29,7 @@ export class Submission
     address!: string
     statusId!: SubmissionStatus
     history!: SubmissionHistory[]
+    notes?: string
 
     static initModel(sequelize: Sequelize) {
         Submission.init(
@@ -77,6 +79,10 @@ export class Submission
                 history: {
                     type: DataTypes.JSON,
                     allowNull: false,
+                },
+                notes: {
+                    type: DataTypes.TEXT,
+                    allowNull: true,
                 },
             },
             {
