@@ -160,7 +160,7 @@ export class UserService extends BaseService {
             refreshLifetime: myConfig.lifetimeUserRefresh,
             accessTokenAudience: SubjectPrivileges[subjectType],
             refreshTokenAudience: [Privilege.UserRefreshToken],
-            timestamp: timestamp,
+            timestamp,
         })
 
         const sessionPayload: AuthSessionCreationAttributes = {

@@ -3,7 +3,13 @@ import Provider from '../../provider'
 import { dateToUnix } from '../../utils/date-formatter'
 import { AdminAttributes } from '../models/admin.model'
 import { AdminDto, AdminSessionResult } from '../../dto/admin.dto'
-import { AdminLoginPayload, PrepareAdminDataSessionResult, Session } from '../../dto/auth.dto'
+import {
+    AdminLoginPayload,
+    GetAuthSubjectPayload,
+    PrepareAdminDataSessionResult,
+    Session,
+    Subject,
+} from '../../dto/auth.dto'
 import { Privilege, SubjectPrivileges, SubjectType } from '../constants/auth.constant'
 import randomstring from 'randomstring'
 import { AdminRepository } from '../repositories/admin.repository'
@@ -15,6 +21,7 @@ import { DateTime } from 'luxon'
 import { AuthService } from './auth.service'
 import { AuthRepository } from '../repositories/auth.repository'
 import bcrypt from 'bcrypt'
+import { toUserModifier } from '../models/user.model'
 
 export class AdminService extends BaseService {
     // repositories
@@ -108,7 +115,7 @@ export class AdminService extends BaseService {
             refreshLifetime: myConfig.lifetimeUserRefresh,
             accessTokenAudience: SubjectPrivileges[subjectType],
             refreshTokenAudience: [Privilege.UserRefreshToken],
-            timestamp: timestamp,
+            timestamp,
         })
 
         const sessionPayload: AuthSessionCreationAttributes = {
@@ -131,6 +138,23 @@ export class AdminService extends BaseService {
 
         // compose and return
         return this.composeAdminSession(adminDto, accessSession, refreshSession, privileges)
+    }
+
+    getAuthSubject = async (payload: GetAuthSubjectPayload): Promise<Subject> => {
+        // Get user
+        const admin = await this.adminRepo.findByXid(payload.subjectId)
+        if (!admin) {
+            throw new Error('unexpected error, user is not found')
+        }
+
+        // Create subject
+        return new Subject({
+            subjectType: SubjectType.User,
+            subjectId: admin.xid,
+            subjectRefId: admin.id,
+            modifier: toUserModifier(admin),
+            sessionId: payload.sessionId,
+        })
     }
 
     // -- Service Function Port -- //

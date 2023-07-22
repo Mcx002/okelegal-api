@@ -24,6 +24,7 @@ import jwt, { Algorithm } from 'jsonwebtoken'
 import { UserService } from './user.service'
 import { AuthSessionAttributes } from '../models/auth-session.model'
 import { dateToUnix } from '../../utils/date-formatter'
+import { AdminService } from './admin.service'
 
 export class AuthService extends BaseService {
     // repositories
@@ -31,12 +32,14 @@ export class AuthService extends BaseService {
 
     // services
     userService!: UserService
+    adminService!: AdminService
 
     init(provider: Provider) {
         const { repository, service } = provider
 
         this.authRepository = repository.authRepository
         this.userService = service.userService
+        this.adminService = service.adminService
     }
 
     createClientAuthSession = async (clientId: string, clientSecret: string): Promise<SessionResult> => {
@@ -115,6 +118,10 @@ export class AuthService extends BaseService {
         // Get subject reference
         switch (subjectType) {
             case SubjectType.Admin:
+                return this.adminService.getAuthSubject({
+                    sessionId: session.id,
+                    subjectId: session.subjectId,
+                })
             case SubjectType.User:
                 return this.userService.getAuthSubject({
                     sessionId: session.id,
@@ -288,7 +295,7 @@ export class AuthService extends BaseService {
             subject,
             subjectType,
             createdAt: timestamp,
-            lifetime: lifetime,
+            lifetime,
             audience: accessTokenAudience,
         })
 
