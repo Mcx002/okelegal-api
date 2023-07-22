@@ -1,9 +1,9 @@
 export enum SubmissionStatus {
     Submitted = 1,
     Paid,
-    Valid,
+    PaymentInvalid,
     Done,
-    NeedRevision,
+    InvalidData,
 }
 
 export const composeSubmissionStatusResult = (id: SubmissionStatus) => {
@@ -15,14 +15,14 @@ export const composeSubmissionStatusResult = (id: SubmissionStatus) => {
         case SubmissionStatus.Paid:
             name = 'Paid'
             break
-        case SubmissionStatus.Valid:
-            name = 'Valid'
+        case SubmissionStatus.PaymentInvalid:
+            name = 'Payment Invalid'
             break
         case SubmissionStatus.Done:
             name = 'Done'
             break
-        case SubmissionStatus.NeedRevision:
-            name = 'NeedRevision'
+        case SubmissionStatus.InvalidData:
+            name = 'Invalid Data'
             break
         default:
             name = 'UNKNOWN'
