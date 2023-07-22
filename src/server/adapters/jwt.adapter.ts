@@ -32,18 +32,18 @@ export class JwtAdapter {
             issuer: this.issuer,
             subject,
             audience,
-            expiresIn: lifetime,
             jwtid: sessionXid,
         }
+
+        // Calculate expiry
+        const exp = DateTime.fromJSDate(createdAt).plus({ second: lifetime }).toUnixInteger()
 
         // Init payload
         const payload: JWTPayload = {
             ent: subjectType,
             meta: metadata,
+            exp,
         }
-
-        // Calculate expiry
-        const exp = DateTime.fromJSDate(createdAt).plus({ second: lifetime }).toUnixInteger()
 
         // Generate token
         const token = jwt.sign(payload, this.secret, jwtOptions)
