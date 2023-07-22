@@ -1,6 +1,6 @@
 import BaseRepository from '../base/base-repository'
 import Provider from '../../provider'
-import { Submission, SubmissionCreationAttributes } from '../models/submission.model'
+import { Submission, SubmissionAttributes, SubmissionCreationAttributes } from '../models/submission.model'
 
 export class SubmissionRepository extends BaseRepository {
     init(_: Provider) {
@@ -17,6 +17,17 @@ export class SubmissionRepository extends BaseRepository {
                 xid,
             },
         })
+    }
+
+    update = async (id: number, row: Partial<SubmissionAttributes>, version: number): Promise<number> => {
+        const update = await Submission.update(row, {
+            where: {
+                id,
+                version,
+            },
+        })
+
+        return update[0]
     }
 
     // -- Repository Function Port -- //

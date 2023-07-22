@@ -1,6 +1,6 @@
 import BaseRepository from '../base/base-repository'
 import Provider from '../../provider'
-import { Admin, AdminJoinAttributes } from '../models/admin.model'
+import { Admin, AdminAttributes, AdminJoinAttributes } from '../models/admin.model'
 import { AdminAuth } from '../models/admin-auth.model'
 
 export class AdminRepository extends BaseRepository {
@@ -18,6 +18,12 @@ export class AdminRepository extends BaseRepository {
                 required: true,
                 as: 'adminAuth',
             },
+        })
+    }
+
+    findByXid = (xid: string): Promise<AdminAttributes | null> => {
+        return Admin.findOne({
+            where: { xid },
         })
     }
 
