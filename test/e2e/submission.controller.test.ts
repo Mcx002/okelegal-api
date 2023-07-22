@@ -76,4 +76,31 @@ describe('Submission Controller E2E Test', () => {
         expect(res.body).toHaveProperty('data')
         expect(res.body.data.status.id).toBe(SubmissionStatus.PaymentInvalid)
     })
+
+    test('[Patch /submissions/:xid/payment-paid] Should Set Submission Status to Paid', async () => {
+        const { service } = createProviderTest(db.dbContext.sequelize)
+        const { accessSession } = await generateAdminToken(service.adminService)
+
+        const dataCreateSubmission = {
+            companyName: 'PT Kerja Bakti Sejahtera',
+            address: 'Subang',
+        }
+
+        const submissionDto = await service.submissionService.createSubmission(dataCreateSubmission)
+
+        const data = {
+            version: 1,
+        }
+
+        const res = await request(server)
+            .patch(`/submissions/${submissionDto.xid}/payment-paid`)
+            .set({
+                Authorization: `Bearer ${accessSession.session.token}`,
+            })
+            .send(data)
+
+        expect(res.statusCode).toEqual(200)
+        expect(res.body).toHaveProperty('data')
+        expect(res.body.data.status.id).toBe(SubmissionStatus.Paid)
+    })
 })
